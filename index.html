@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Brain Bender - Math Speed Game</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body  style="flex-direction: column;">
+<div><nav id="navbar" style="display: block">
+      <a href="#">Home</a>
+      <a href="#">Sign Up</a>
+      <a href="#">Log In</a>
+<div class="toggle-container">
+  <label class="toggle-label">Dark Theme:</label>
+  <input onclick="dark_mode()" class="toggle-input" type="checkbox" id="toggle-dark-mode">
+  <label class="toggle-slider" for="toggle-dark-mode"></label>
+</div>
+
+
+    </nav></div>
+    <div id="game" style="overflow: auto; height: 500px" class="game-container">
+      <small style="color: #fc1c45">Guessoword's</small>
+      <div class="game-title">Brain Bender</div>
+      <div class="game-instructions">A measure of your thinking speed</div>
+      <div class="game-score">Current Brain Benders: 0</div>
+      <button class="game-button">Play A Demo</button>
+      <br><br><small>or log in to save your stats</small>
+      <br><br><button class="game-button">Sign Up</button>
+      <button class="game-button">Log In</button>
+      <br><br><small style="font-size: 8px"><i>(everything is free)</i></small>
+      <br><br><small>&copy 2023 Guessoword.com</small>
+    </div>
+
+<script>
+function dark_mode() {
+  if (localStorage.getItem("darkmode") != "true") {
+  localStorage.setItem("darkmode", "true");
+  document.body.style.backgroundColor = "#28292e";
+  document.getElementById("game").style.background = "#151517";
+  document.getElementById("game").style.color = "white";
+  //document.getElementById("code-info").style.background = "#353642";
+  //document.getElementById("equation").style.background = "#353642";
+  document.getElementById("navbar").style.background = "#353642";
+}
+else {
+  localStorage.setItem("darkmode", "false");
+  document.body.style.backgroundColor = "#f2f2f2";
+  document.getElementById("game").style.background = "white";
+  document.getElementById("game").style.color = "black";
+  //document.getElementById("code-info").style.background = "#f2f2f2";
+  //document.getElementById("equation").style.background = "#f2f2f2";
+  document.getElementById("navbar").style.background = "white";
+}
+}
+
+if (localStorage.getItem("darkmode") == "true") {
+  document.getElementById("toggle-dark-mode").checked = true;
+  document.body.style.backgroundColor = "#28292e";
+  document.getElementById("game").style.background = "#151517";
+  document.getElementById("game").style.color = "white";
+  //document.getElementById("code-info").style.background = "#353642";
+  //document.getElementById("equation").style.background = "#353642";
+  document.getElementById("navbar").style.background = "#353642";
+}
+</script>
+  </body>
+</html>

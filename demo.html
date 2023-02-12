@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Brain Bender - Demo Game</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body style="flex-direction: column;">
+<div><nav id="navbar" style="display: block">
+      <a href="#">Home</a>
+      <a href="#">Sign Up</a>
+      <a href="#">Log In</a>
+<div class="toggle-container">
+  <label class="toggle-label">Dark Theme:</label>
+  <input onclick="dark_mode()" class="toggle-input" type="checkbox" id="toggle-dark-mode">
+  <label class="toggle-slider" for="toggle-dark-mode"></label>
+</div>
+
+
+    </nav></div>
+    <div id="game" style="overflow: auto; height: 500px" class="game-container">
+      <small class="moving-label" style="font-size: 16px; color: " id="feedback"></small><br>
+
+      <small style="color: #fc1c45">Guessoword's</small>
+      <div class="game-title">Brain Bender</div>
+      <div class="game-instructions">A measure of your thinking speed</div>
+      <code id="equation" class="equation" style="font-size: 48px"></code><br><br>
+      <button onclick="window.location.href=''" id="nextquestion" style="display: none" class="game-button">Next Question</button><br>
+      <input style="width: 24%" id="answer" class="answer" name="answer" type="number" required>
+      <button id="submitbutton" onclick="check_answer()" class="game-button">Submit</button><br><br>
+      <code id="code-info">Time Spent: <span id="stopwatch"></span></code><br><br>
+      <code id="code-info2">Tip: Use "Enter" to submit faster.<br>The real game gets harder!<br>This is the demo game.<br>No content will be saved.</code>
+      <p>Our <a href="/privacy">Privacy Policy</a> applies to this demo game.</p>
+      <br><br><small>&copy 2023 Guessoword.com</small>
+    </div>
+
+<script>
+var total;
+
+fetch('https://brainbenderdemo.pythonanywhere.com/request/equation/demo')
+  .then(response => response.text())
+  .then(data => {
+    total = data;
+    var parts = data.split(",");
+    document.getElementById("equation").innerHTML = parts[0];
+  });
+
+window.onload = function() {
+  document.getElementById("answer").focus();
+};
+
+let startTime = new Date();
+
+let interval = setInterval(function() {
+    let elapsedTime = new Date() - startTime;
+    //console.log(`The user has been on the page for ${elapsedTime / 1000} seconds.`);
+    document.getElementById("stopwatch").innerHTML = `${Math.floor(elapsedTime / 1000)} seconds`;
+}, 1);
+
+// Stop the interval when the user leaves the page
+window.onbeforeunload = function() {
+    clearInterval(interval);
+};
+
+function check_answer() {
+clearInterval(interval);
+fetch('https://brainbenderdemo.pythonanywhere.com/post/' + total + '...' + document.getElementById("answer").value , {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    key: 'value'
+  })
+})
+.then(response => response.text())
+.then(data => {
+document.getElementById("feedback").innerHTML = data;
+if (data == "Nice job!") {
+document.getElementById("feedback").style.color = "#538c61";
+}
+else {
+document.getElementById("feedback").style.color = "#c2040d";
+}
+})
+document.getElementById("submitbutton").disabled = true;
+document.getElementById("answer").disabled = true;
+document.getElementById("nextquestion").style.display = "inline-block";
+}
+
+document.getElementById("answer").addEventListener("keyup", function(event) {
+  event.preventDefault();
+  if (event.keyCode === 13) {
+    document.getElementById("submitbutton").click();
+  }
+});
+
+function dark_mode() {
+  if (localStorage.getItem("darkmode") != "true") {
+  localStorage.setItem("darkmode", "true");
+  document.body.style.backgroundColor = "#28292e";
+  document.getElementById("game").style.background = "#151517";
+  document.getElementById("game").style.color = "white";
+  document.getElementById("code-info").style.background = "#353642";
+  document.getElementById("code-info2").style.background = "#353642";
+  document.getElementById("equation").style.background = "#353642";
+  document.getElementById("navbar").style.background = "#353642";
+}
+else {
+  localStorage.setItem("darkmode", "false");
+  document.body.style.backgroundColor = "#f2f2f2";
+  document.getElementById("game").style.background = "white";
+  document.getElementById("game").style.color = "black";
+  document.getElementById("code-info").style.background = "#f2f2f2";
+  document.getElementById("code-info2").style.background = "#f2f2f2";
+  document.getElementById("equation").style.background = "#f2f2f2";
+  document.getElementById("navbar").style.background = "white";
+}
+}
+
+if (localStorage.getItem("darkmode") == "true") {
+  document.getElementById("toggle-dark-mode").checked = true;
+  document.body.style.backgroundColor = "#28292e";
+  document.getElementById("game").style.background = "#151517";
+  document.getElementById("game").style.color = "white";
+  document.getElementById("code-info").style.background = "#353642";
+  document.getElementById("code-info2").style.background = "#353642";
+  document.getElementById("equation").style.background = "#353642";
+  document.getElementById("navbar").style.background = "#353642";
+}
+
+</script>
+  </body>
+</html>
